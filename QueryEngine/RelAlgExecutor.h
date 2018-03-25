@@ -141,6 +141,8 @@ class RelAlgExecutor {
     const RelAlgNode* body;
     const size_t max_groups_buffer_entry_guess;
     std::unique_ptr<QueryRewriter> query_rewriter;
+    const std::vector<size_t> input_permutation;
+    const std::vector<size_t> left_deep_join_input_sizes;
   };
 
   WorkUnit createSortInputWorkUnit(const RelSort*, const bool just_explain);
@@ -162,6 +164,10 @@ class RelAlgExecutor {
                               const bool is_agg,
                               const CompilationOptions& co,
                               const ExecutionOptions& eo);
+
+  float getFilterSelectivity(const std::vector<std::shared_ptr<Analyzer::Expr>>& filter_expressions,
+                             const CompilationOptions& co,
+                             const ExecutionOptions& eo);
 
   bool isRowidLookup(const WorkUnit& work_unit);
 
